@@ -33,13 +33,15 @@
     - "vars['ipmi_exporter_package_state'] is defined"
     - "vars['ipmi_exporter_package_state'] != []"
     - "vars['ipmi_exporter_package_state'] != ''"
+    - "vars['ipmi_exporter_package_state'] != None"
 - name: "ipmi_exporter | Set package state to 'present' cause value is not
     defined"
   ansible.builtin.set_fact:
     ipmi_exporter_package_state: "present"
   when:
     - "vars['ipmi_exporter_package_state'] is defined"
-    - "vars['ipmi_exporter_package_state'] == ''"
+    - "(vars['ipmi_exporter_package_state'] == '' or
+      vars['ipmi_exporter_package_state'] == None)"
 - name: "ipmi_exporter | Get last release version from Github"
   community.general.github_release:
     user: "prometheus-community"

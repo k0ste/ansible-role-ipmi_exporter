@@ -3,7 +3,8 @@
 {{ '# Do not edit manually' }}
 
 {% if vars['ipmi_exporter_options'] is defined and
-  vars['ipmi_exporter_options'] != '' %}
+  (vars['ipmi_exporter_options'] != '' or
+  vars['ipmi_exporter_options'] != None) %}
 {% for i in vars['ipmi_exporter_options'] %}
 {% if loop['first'] %}
 {{ 'OPTIONS=\"' -}}
