@@ -7,29 +7,35 @@
       "{{ hostvars[inventory_hostname]['ipmi_exporter_packages_deps'] }}"
 - name: "ipmi_exporter | Download & unarchive exporter binary from tarball"
   ansible.builtin.unarchive:
-    src: "{{ vars['ipmi_exporter_url'] + '/v' + vars['ipmi_exporter_version'] +
-      '/ipmi_exporter-' + vars['ipmi_exporter_version'] + '.' +
-      vars['ipmi_exporter_arch'] + '.tar.gz' }}"
+    src: "{{ lookup('ansible.builtin.vars', 'ipmi_exporter_url') + '/v' +
+      lookup('ansible.builtin.vars', 'ipmi_exporter_version') +
+      '/ipmi_exporter-' + lookup('ansible.builtin.vars',
+      'ipmi_exporter_version') + '.' + lookup('ansible.builtin.vars',
+      'ipmi_exporter_arch') + '.tar.gz' }}"
     dest: "{{ hostvars[inventory_hostname]['ipmi_exporter_dest'] }}"
     remote_src: "yes"
-    include: "{{ 'ipmi_exporter-' + vars['ipmi_exporter_version'] + '.' +
-      vars['ipmi_exporter_arch'] + '/ipmi_exporter' }}"
+    include: "{{ 'ipmi_exporter-' + lookup('ansible.builtin.vars',
+      'ipmi_exporter_version') + '.' + lookup('ansible.builtin.vars',
+      'ipmi_exporter_arch') + '/ipmi_exporter' }}"
     mode: "0775"
     owner: "root"
     group: "root"
 - name: "ipmi_exporter | Move exporter binary arfter unarchive"
   ansible.builtin.command:
     cmd: "{{ 'mv ' + hostvars[inventory_hostname]['ipmi_exporter_dest'] +
-      '/ipmi_exporter-' + vars['ipmi_exporter_version'] + '.' +
-      vars['ipmi_exporter_arch'] + '/ipmi_exporter ' +
+      '/ipmi_exporter-' + lookup('ansible.builtin.vars',
+      'ipmi_exporter_version') + '.' + lookup('ansible.builtin.vars',
+      'ipmi_exporter_arch') + '/ipmi_exporter ' +
       hostvars[inventory_hostname]['ipmi_exporter_dest'] + '/' }}"
     removes: "{{ hostvars[inventory_hostname]['ipmi_exporter_dest'] +
-      '/ipmi_exporter-' + vars['ipmi_exporter_version'] + '.' +
-      vars['ipmi_exporter_arch'] + '/ipmi_exporter' }}"
+      '/ipmi_exporter-' + lookup('ansible.builtin.vars',
+      'ipmi_exporter_version') + '.' +  lookup('ansible.builtin.vars',
+      'ipmi_exporter_arch') + '/ipmi_exporter' }}"
 - name: "ipmi_exporter | Deleting unnecessary directory"
   ansible.builtin.file:
     path: "{{ hostvars[inventory_hostname]['ipmi_exporter_dest'] +
-      '/ipmi_exporter-' + vars['ipmi_exporter_version'] + '.' +
-      vars['ipmi_exporter_arch'] }}"
+      '/ipmi_exporter-' + lookup('ansible.builtin.vars',
+      'ipmi_exporter_version') + '.' + lookup('ansible.builtin.vars',
+      'ipmi_exporter_arch') }}"
     state: "absent"
   diff: false

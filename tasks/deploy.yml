@@ -9,13 +9,11 @@
     mode: "0644"
   when:
     - "hostvars[inventory_hostname]['ipmi_exporter'] is defined"
-    - "hostvars[inventory_hostname]['ipmi_exporter'] != ''"
+    - "hostvars[inventory_hostname]['ipmi_exporter']
+      not in ['', [], '[]', None]"
     - "hostvars[inventory_hostname]['ipmi_exporter'] |
-       community.general.json_query(vars['ipmi_exporter_install_package'])
-       is defined"
-    - "hostvars[inventory_hostname]['ipmi_exporter'] |
-       community.general.json_query(vars['ipmi_exporter_install_package'])
-       == 'true'"
+       community.general.json_query(lookup('ansible.builtin.vars',
+      'ipmi_exporter_install_package', default='')) == 'true'"
   vars:
     ipmi_exporter_install_package:
       "[] | map(&install_package || 'false', @) | [0]"
@@ -31,13 +29,11 @@
     mode: "0644"
   when:
     - "hostvars[inventory_hostname]['ipmi_exporter'] is defined"
-    - "hostvars[inventory_hostname]['ipmi_exporter'] != ''"
+    - "hostvars[inventory_hostname]['ipmi_exporter']
+      not in ['', [], '[]', None]"
     - "hostvars[inventory_hostname]['ipmi_exporter'] |
-       community.general.json_query(vars['ipmi_exporter_install_package'])
-       is defined"
-    - "hostvars[inventory_hostname]['ipmi_exporter'] |
-       community.general.json_query(vars['ipmi_exporter_install_package'])
-       == 'true'"
+       community.general.json_query(lookup('ansible.builtin.vars',
+      'ipmi_exporter_install_package', default='')) == 'true'"
   vars:
     ipmi_exporter_install_package:
       "[] | map(&install_package || 'false', @) | [0]"
@@ -53,13 +49,11 @@
     mode: "0644"
   when:
     - "hostvars[inventory_hostname]['ipmi_exporter'] is defined"
-    - "hostvars[inventory_hostname]['ipmi_exporter'] != ''"
+    - "hostvars[inventory_hostname]['ipmi_exporter']
+      not in ['', [], '[]', None]"
     - "hostvars[inventory_hostname]['ipmi_exporter'] |
-       community.general.json_query(vars['ipmi_exporter_install_package'])
-       is defined"
-    - "hostvars[inventory_hostname]['ipmi_exporter'] |
-       community.general.json_query(vars['ipmi_exporter_install_package'])
-       == 'false'"
+       community.general.json_query(lookup('ansible.builtin.vars',
+      'ipmi_exporter_install_package', default='')) == 'false'"
   vars:
     ipmi_exporter_install_package:
       "[] | map(&install_package || 'false', @) | [0]"
@@ -76,13 +70,11 @@
     mode: "0644"
   when:
     - "hostvars[inventory_hostname]['ipmi_exporter'] is defined"
-    - "hostvars[inventory_hostname]['ipmi_exporter'] != ''"
+    - "hostvars[inventory_hostname]['ipmi_exporter']
+      not in ['', [], '[]', None]"
     - "hostvars[inventory_hostname]['ipmi_exporter'] |
-       community.general.json_query(vars['ipmi_exporter_install_package'])
-       is defined"
-    - "hostvars[inventory_hostname]['ipmi_exporter'] |
-       community.general.json_query(vars['ipmi_exporter_install_package'])
-       == 'false'"
+       community.general.json_query(lookup('ansible.builtin.vars',
+      'ipmi_exporter_install_package', default='')) == 'false'"
   vars:
     ipmi_exporter_install_package:
       "[] | map(&install_package || 'false', @) | [0]"
@@ -95,10 +87,10 @@
     enabled: "yes"
   when:
     - "hostvars[inventory_hostname]['ipmi_exporter'] is defined"
-    - "hostvars[inventory_hostname]['ipmi_exporter'] != ''"
+    - "hostvars[inventory_hostname]['ipmi_exporter']
+      not in ['', [], '[]', None]"
     - "hostvars[inventory_hostname]['ipmi_exporter'] |
-       community.general.json_query(vars['ipmi_exporter_enable']) is defined"
-    - "hostvars[inventory_hostname]['ipmi_exporter'] |
-       community.general.json_query(vars['ipmi_exporter_enable']) == 'true'"
+       community.general.json_query(lookup('ansible.builtin.vars',
+      'ipmi_exporter_enable', default='')) == 'true'"
   vars:
     ipmi_exporter_enable: "[] | map(&enable || 'false', @) | [0]"

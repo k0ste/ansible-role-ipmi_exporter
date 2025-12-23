@@ -1,5 +1,6 @@
-{{ '## ' + 'ipmi_exporter.yml' }}
+{{ '## ipmi_exporter.yml' }}
 {{ '# ' + ansible_managed }}
 {{ '# Do not edit manually' }}
 
-{{ ipmi_exporter_settings | to_nice_yaml(indent=2, explicit_start=True) }}
+{{ lookup('ansible.builtin.vars', 'ipmi_exporter_settings') |
+  ansible.builtin.to_nice_yaml(indent=2, explicit_start=True) }}
