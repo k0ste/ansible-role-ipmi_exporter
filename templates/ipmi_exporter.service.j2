@@ -3,21 +3,37 @@
 {{ '# Do not edit manually' }}
 
 {{ '[Unit]' }}
-{{ 'Description=Prometheus IPMI exporter' }}
-{{ 'After=network.target network-online.target basic.target' }}
-{{ 'Wants=network-online.target' }}
+{{ 'Description=Prometheus exporter for IPMI metrics' }}
+{{ 'Documentation=https://github.com/prometheus-community/ipmi_exporter' }}
+{{ 'After=network.target network-online.target nss-lookup.target basic.target' }}
+{{ 'Wants=network-online.target nss-lookup.target' }}
 {{ 'StartLimitIntervalSec=30' }}
 {{ 'StartLimitBurst=3' }}
 
 {{ '[Service]' }}
-{{ 'Type=simple' }}
 {{ 'Restart=on-failure' }}
 {{ 'RestartSec=30' }}
 {{ 'User=nobody' }}
 {{ 'Group=nobody' }}
-{{ 'ExecStart=' + hostvars[inventory_hostname]['ipmi_exporter_dest'] +
-  '/ipmi_exporter --config.file=' +
-  hostvars[inventory_hostname]['ipmi_exporter_dest'] + '/ipmi_exporter.yaml' -}}
+{{ 'ExecReload=/bin/kill -HUP $MAINPID' }}
+{{ 'NoNewPrivileges=true' }}
+{{ 'ProtectHome=true' }}
+{{ 'ProtectSystem=full' }}
+{{ 'ProtectHostname=true' }}
+{{ 'ProtectControlGroups=true' }}
+{{ 'ProtectKernelModules=true' }}
+{{ 'ProtectKernelTunables=true' }}
+{{ 'LockPersonality=true' }}
+{{ 'RestrictRealtime=yes' }}
+{{ 'RestrictNamespaces=yes' }}
+{{ 'MemoryDenyWriteExecute=yes' }}
+{{ 'PrivateDevices=yes' }}
+{{ 'PrivateTmp=true' }}
+{{ 'CapabilityBoundingSet=' }}
+
+{{ 'ExecStart=' + lookup('ansible.builtin.vars', 'ipmi_exporter_dest') +
+  '/ipmi_exporter --config.file=' + lookup('ansible.builtin.vars',
+  'ipmi_exporter_dest') + '/ipmi_exporter.yaml' -}}
 {% if lookup('ansible.builtin.vars', 'ipmi_exporter_options', default='')
   not in ['', [], '[]', None] %}
 {% for i in lookup('ansible.builtin.vars', 'ipmi_exporter_options') %}
